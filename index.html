@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CacEngAI 5</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Engineer Pro Calculator AI 5.0</h1>
+        <button id="interfaceModifications" onclick="toggleSettings()">Interface Modifications</button>
+    </header>
+    
+    <!-- Home Page -->
+    <div id="homePage" class="home-page">
+        <h1>Welcome to Engineer Pro Calculator AI 5.0</h1>
+        <p>Select a theme to get started:</p>
+        <button onclick="setTheme('light'); loadCalculator()">Light Theme</button>
+        <button onclick="setTheme('dark'); loadCalculator()">Dark Theme</button>
+        <button onclick="setTheme('happy'); loadCalculator()">Happy Theme</button>
+    </div>
+
+    <!-- Calculator Page -->
+    <div id="calculatorPage" class="hidden">
+        <div class="settings">
+            <button id="settingsToggle">⚙ Settings</button>
+            <div class="settings-panel hidden">
+                <h2>Settings</h2>
+                <hr>
+                <div class="settings-option">
+                    <label>Theme</label>
+                    <button onclick="setTheme('light')">Light</button>
+                    <button onclick="setTheme('dark')">Dark</button>
+                    <button onclick="setTheme('happy')">Happy</button>
+                </div>
+                <hr>
+                <div class="settings-option">
+                    <label for="fontSize">Font Size</label>
+                    <button onclick="toggleFontSize()">Toggle Font Size</button>
+                </div>
+            </div>
+        </div>
+
+        <h1>Engineer Pro Calculator AI 5.0</h1>
+        <div id="calculator" class="calculator">
+            <div id="secondaryDisplay" class="secondary-display">0</div>
+            <div id="currentDisplay" class="current-display">0</div>
+            <table class="calculator-table">
+                <tr>
+                    <td><button onclick="clearDisplay()">C</button></td>
+                    <td><button onclick="appendValue('(')">(</button></td>
+                    <td><button onclick="appendValue(')')">)</button></td>
+                    <td><button onclick="appendValue('÷')">÷</button></td>
+                </tr>
+                <tr>
+                    <td><button onclick="appendValue('7')">7</button></td>
+                    <td><button onclick="appendValue('8')">8</button></td>
+                    <td><button onclick="appendValue('9')">9</button></td>
+                    <td><button onclick="appendValue('×')">×</button></td>
+                </tr>
+                <tr>
+                    <td><button onclick="appendValue('4')">4</button></td>
+                    <td><button onclick="appendValue('5')">5</button></td>
+                    <td><button onclick="appendValue('6')">6</button></td>
+                    <td><button onclick="appendValue('-')">-</button></td>
+                </tr>
+                <tr>
+                    <td><button onclick="appendValue('1')">1</button></td>
+                    <td><button onclick="appendValue('2')">2</button></td>
+                    <td><button onclick="appendValue('3')">3</button></td>
+                    <td><button onclick="appendValue('+')">+</button></td>
+                </tr>
+                <tr>
+                    <td><button onclick="appendValue('0')">0</button></td>
+                    <td><button onclick="appendValue('.')">.</button></td>
+                    <td><button onclick="calculateResult()">=</button></td>
+                    <td><button onclick="appendValue('^')">^</button></td>
+                </tr>
+                <tr>
+                    <td><button onclick="appendValue('sin(')">sin</button></td>
+                    <td><button onclick="appendValue('cos(')">cos</button></td>
+                    <td><button onclick="appendValue('tan(')">tan</button></td>
+                    <td><button onclick="appendValue('√')">√</button></td>
+                </tr>
+                <tr>
+                    <td><button onclick="appendValue('log(')">log</button></td>
+                    <td><button onclick="appendValue('ln(')">ln</button></td>
+                    <td><button onclick="storeIntermediate()">Store Mid</button></td>
+                    <td><button onclick="showGraph()">Graph</button></td>
+                </tr>
+            </table>
+            <button id="viewHistory" onclick="toggleHistory()">View History</button>
+        </div>
+
+        <div id="historyModal" class="history hidden">
+            <h2>Calculation History</h2>
+            <ul id="historyList"></ul>
+            <button onclick="toggleHistory()">Close</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
