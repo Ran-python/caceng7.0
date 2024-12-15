@@ -1,18 +1,8 @@
+// Global variables
 let history = [];
 let midValue = 0;
 
-// Load the calculator after selecting a theme
-function loadCalculator() {
-    document.getElementById("homePage").classList.add("hidden");
-    document.getElementById("calculatorPage").classList.remove("hidden");
-}
-
-// Set theme dynamically
-function setTheme(theme) {
-    document.body.className = theme;
-}
-
-// Append values to the display
+// Append value to the display
 function appendValue(value) {
     const display = document.getElementById("currentDisplay");
     if (display.textContent === "0") {
@@ -24,15 +14,16 @@ function appendValue(value) {
 
 // Clear the display
 function clearDisplay() {
-    document.getElementById("currentDisplay").textContent = "0"; 
+    document.getElementById("currentDisplay").textContent = "0";
     document.getElementById("secondaryDisplay").textContent = "0";
 }
 
-// Calculate the result
+// Calculate the result and update history
 function calculateResult() {
     const display = document.getElementById("currentDisplay");
     try {
-        const result = eval(display.textContent.replace("×", "*").replace("÷", "/"));
+        const expression = display.textContent.replace("×", "*").replace("÷", "/").replace("^", "**");
+        const result = eval(expression); // Evaluate the expression
         history.push(`${display.textContent} = ${result}`);
         updateHistory();
         display.textContent = result;
@@ -48,10 +39,10 @@ function storeIntermediate() {
     document.getElementById("secondaryDisplay").textContent = `Stored: ${midValue}`;
 }
 
-// Update history display
+// Update the history modal with previous calculations
 function updateHistory() {
     const historyList = document.getElementById("historyList");
-    historyList.innerHTML = "";
+    historyList.innerHTML = ""; // Clear the list
     history.forEach(entry => {
         const li = document.createElement("li");
         li.textContent = entry;
@@ -59,24 +50,72 @@ function updateHistory() {
     });
 }
 
-// Toggle history modal
-function toggleHistory() {
-    const historyModal = document.getElementById("historyModal");
-    historyModal.classList.toggle("hidden");
+// Toggle modals (settings, themes, history, scoring)
+function toggleModal(id) {
+    const modal = document.getElementById(id);
+    modal.classList.toggle("hidden");
 }
 
-// Font size toggle
-function toggleFontSize() {
-    document.body.classList.toggle("large-font");
+// Change font size
+function setFontSize(size) {
+    const calculator = document.getElementById("calculator");
+    calculator.style.fontSize = size === "small" ? "14px" : size === "medium" ? "18px" : "22px";
 }
 
-// Graph functionality (placeholder)
+// Change theme dynamically
+function setTheme(theme) {
+    document.body.className = theme; // Assign the theme as the body class
+}
+
+// Placeholder for graph functionality
 function showGraph() {
     alert("Graph functionality coming soon!");
 }
 
-function setTheme(theme) {
-    document.body.className = theme; // Applies theme to body
-    const settingsButton = document.getElementById("interfaceModifications");
-    settingsButton.className = theme; // Updates button style
+// Scoring system: calculate APM, EPM, and Efficiency
+let startTime = null;
+let totalActions = 0;
+let totalErrors = 0;
+
+// Start tracking typing speed
+function startTracking() {
+    if (!startTime) {
+        startTime = new Date().getTime();
+    }
 }
+
+// Stop tracking and calculate scores
+function stopTracking() {
+    const endTime = new Date().getTime();
+    const inputText = document.getElementById("currentDisplay").textContent;
+
+    const timeElapsed = (endTime - startTime) / 1000; // Time in seconds
+    totalActions = inputText.length; // Number of characters typed
+
+    // Count errors (placeholder logic for errors)
+    totalErrors = Math.floor(Math.random() * 5); // Randomly simulate errors
+
+    const apm = Math.round((totalActions / timeElapsed) * 60); // Actions per minute
+    const epm = Math.round((totalErrors / timeElapsed) * 60); // Errors per minute
+    const efficiency = Math.max(0, 100 - epm); // Efficiency score (out of 100)
+
+    // Display scoring results
+    const scoringOutput = document.getElementById("scoringOutput");
+    scoringOutput.innerHTML = `
+        <p><strong>Actions Per Minute (APM):</strong> ${apm}</p>
+        <p><strong>Errors Per Minute (EPM):</strong> ${epm}</p>
+        <p><strong>Efficiency Score:</strong> ${efficiency} / 100</p>
+    `;
+
+    // Reset for next session
+    startTime = null;
+    totalActions = 0;
+    totalErrors = 0;
+}
+
+// Initialize scoring modal
+function showScoring() {
+    toggleModal('scoringModal');
+    stopTracking(); // Calculate scoring when modal is shown
+}
+
